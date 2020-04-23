@@ -1,0 +1,285 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ScanVirus - 云扫描网 - 免费在线病毒扫描</title>
+	<link rel="shortcut icon" href="../static/img/mytextl.png">
+
+	<meta name="keywords" content="云扫描,在线检测，恶意软件">
+	<meta name="description" content="ScanVirus是一个免费网站">
+
+
+	<link rel="stylesheet" href="../static/css/second.css">
+	<link rel="stylesheet" href="../static/css/analyze.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/tabs.css">
+	<link href="../static/css/bootstrap.css" rel="stylesheet" media="screen">
+
+	<script src="../static/js/jquery1_7.js"></script>
+	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/jquery.form.js"></script> 
+
+	<script type="text/javascript" src="../static/js/tabs.js"></script>
+	<script type="text/javascript" src="../static/js/upload.js"></script>
+	<!-- <script type="text/javascript" src="../static/js/analyze.js"></script>
+	<script type="text/javascript" src="../static/js/dynamic.js"></script> -->
+	
+</head>
+<body>
+	<div class="H30"></div>
+	<!-- 主体 -->
+	<div class="continer">
+		<div class="logo float">
+			<div class="logoimg">
+				<a href="/">
+					<img src="../static/img/mylogo1.png" alt="scanvir">
+				</a>
+			</div>
+		</div>
+
+		<!-- <div class="H30"></div> -->
+		<div class="uploadfile">
+			<form action="" method="post" enctype="multipart/form-data" id="myForm">
+				<div class="upload">
+					<input type="text" class="ipt_text" id="file_text" placeholder="双击上传文件(最大文件3MB)...">
+					<!-- <input type="submit" name="submit" class="kw_btn" value="扫描一下"> -->
+					<div class="ufimg">
+						<img src="../static/img/inputfile2.png" alt="">
+					</div>
+					<input type="file" name="file" id="upload_file" class="upload_file" size="26" onchange="fileChange(this)">
+					<!-- <input type="file" name="myfile" id="upload_file" class="upload_file" size="26"> -->
+					<input type="submit" name="submit" class="kw_btn" value="">
+					
+				</div>
+			</form>
+		</div>
+		
+
+		<!-- 文件简报 -->
+		<div class="H70"></div>
+		<div class="descript">
+			<div class="hideShow alert alert-info float">
+				文件正在上传...
+			</div>
+
+			<div class="analyzeShow alert alert-success float">
+				文件正在分析...
+			</div>
+
+			<div class="gif float">
+				<img src="../static/img/scan.gif" alt="scaning">
+			</div>
+			<div class="show float" id = "showdata">
+				{% if filename != '' %}
+					文件名称：<span >{{ filename }} </span><br />
+					MD5校验：<span >{{ filemd5 }} </span><br />
+					提交日期：<span >{{ filetime }} </span><br />
+					文件大小：<span >{{ filesize }}M</span><br />
+				{% else %}
+					文件名称：<span > </span><br />
+					MD5校验：<span > </span><br />
+					提交日期：<span > </span><br />
+					文件大小：<span > </span><br />
+				{% endif %}
+			</div>
+		</div>
+	
+		<!-- 选项卡 -->
+		<div class="H30"></div>
+		<div>
+			<div class="TAB">
+				<ul id="tabs">
+					<li id="current" class="scaninfo">
+						<a href="#" name="#tab1">
+							<img src="../static/img/tabicon1.png" alt="">
+							扫描结果
+						</a>
+					</li>
+					<li class="getinfo">
+						<a href="#" name="#tab2">
+							<img src="../static/img/tabicon2.png" alt="">
+							静态分析
+						</a>
+					</li>
+					<li class="dynamicinfo">
+						<a href="#" name="#tab3">
+							<img src="../static/img/tabicon2.png" alt="">
+							动态分析
+						</a>
+					</li>
+				</ul>
+			</div>
+		
+			<div id="tabContent">
+				<div id="tab1">
+					<table>
+						<thead>
+							<tr class="head">
+								<th><strong>反病毒软件</strong></th>
+								<th ><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									文件情况</strong></th>
+								<th><strong>引擎版本</strong></th>
+							</tr>
+						</thead>
+						<tbody id='tbody'>
+							
+						</tbody>
+					</table>
+				</div>
+
+				<div id="tab2">
+					<div class="detailInfo">
+						<div id = 'possible'> 
+
+						</div>
+						
+						
+					</div>
+				</div>
+				<div id="tab3">
+					<div class="head"><div id="dynaTitle"><strong>可疑行为</strong></div></div>
+					<div class="dynamic"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+	<!-- 页脚 -->
+	<div class="foot">
+		<div class="info">
+			<a href="about">关于我们</a>
+		</div>
+		
+		<div class="info">&copy;2020&nbsp;&nbsp;&nbsp;ScanVirus</div>
+	</div>
+
+	<!-- Modal -->
+	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">正在上传</h3>
+		</div>
+		<div class="modal-body">
+			<div class="progress progress-striped active">
+				<div class="bar" style="width: 0%;"></div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn btn-primary">查看已有分析</button>
+		</div>
+	</div>
+
+	<div id="oversize" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">错误</h3>
+		</div>
+		<div class="modal-body">
+			超出3MB限制
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true" window.location.href="upload">关闭</button>
+		</div>
+	</div>
+
+	<div id="nofile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">错误</h3>
+		</div>
+		<div class="modal-body">
+			空文件上传
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">关闭</button>
+		</div>
+	</div>
+
+	<div id="errorfile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">错误</h3>
+		</div>
+		<div class="modal-body">
+			不接收此类文件
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">关闭</button>
+		</div>
+	</div>
+</body>
+	<script>
+		function showFilename(name)
+		{
+			var faketext = document.getElementById("file_text");
+			faketext.value = name.substr(name.lastIndexOf("\\")+1);
+		}
+		function fileChange(target) {
+			var fileSize = 0;
+			var filetypes =[".jpg",".png",".txt",".zip",".doc",".xls",".pdf",".docx",".xlsx", ".exe"];
+			var filepath = target.value;
+			showFilename(filepath);
+			var filemaxsize = 1024*2;//2M
+			if(filepath){
+				var isnext = false;
+				var fileend = filepath.substring(filepath.lastIndexOf("."));
+				if(filetypes && filetypes.length>0){
+					for(var i =0; i<filetypes.length;i++){
+						if(filetypes[i]==fileend){
+							isnext = true;
+							break;
+						}
+					}
+				}
+				if(!isnext){
+					$('#errorfile').modal('show');
+					target.value ="";
+					return false;
+				}
+			}else{
+				return false;
+			}
+		}
+		 $.ajax({ url: '/getSession',
+          type:'POST',
+          data:{},
+          dataType: 'json',
+          success: function (data) {
+			var tbody = $("#tbody");
+			var mylist = data.mylist;
+			var str = '';
+			var count = 0;
+			for(var i=0;i<mylist.length;i++){
+			   str += '<tr> <th>'+mylist[i].name+'</th><th class="virsname second" id="">';
+				if(mylist[i].detected == false){
+					str += '安全';
+					count += 1;
+				}else{
+					str += '危险';
+				}
+				str += '</th><th>'+mylist[i].version+'</th></tr>';
+			}
+			tbody.html(str)
+			
+			var possible = $("#possible");
+			var num = count / mylist.length;
+			num = num * 100;
+			num = num.toFixed(2)
+			var str1 = ''
+			str1 += '<b>根据' +mylist.length+'个在线恶意软件检测平台提供检测的接口显示</b><br><br>'
+			str1 += '此未知文件安全程度为 : ' + num +'%<br><br>'
+			if(num > 80){
+				str1 += '此未知文件的威胁程度 : 安全'
+			}else if(num < 80 && num >40 ){
+				str1 += '此未知文件的威胁程度 : 未知 建议使用动态检测'
+			}else{
+				str1 += '此未知文件的威胁程度 : 危险'
+			}
+			possible.html(str1)
+		  }
+		});
+	</script>
+</html>

@@ -1,0 +1,164 @@
+
+<!doctype html>
+<html lang="en">
+<head> 
+	<meta charset="UTF-8">
+	<title>ScanVirus - 云扫描网 - 免费在线病毒扫描</title>
+	<link rel="shortcut icon" href="../static/img/mytextl.png">
+	<meta name="keywords" content="云扫描,在线检测，恶意软件">
+	<meta name="description" content="ScanVirus是一个免费网站">
+	
+	<!-- Bootstrap -->
+	<link href="../static/css/bootstrap.css" rel="stylesheet" media="screen">
+	<script src="../static/js/jquery1_7.js"></script>
+	<script src="../static/js/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" href="../static/css/index.css">
+
+	<script src="../static/js/jquery.form.js"></script>
+	<script src="../static/js/index.js"></script>
+	
+</head>
+<body>
+	
+
+	<div class="H70"></div>
+
+	<div class="continer">
+		<div class="logo">
+			<div class="logoimg float">
+				<img src="../static/img/indexlogo.png" alt="scanvir">
+			</div>
+		</div>
+
+		<div class="H50"></div>
+
+		<div class="uploadfile">
+			<form action="" method="post" enctype="multipart/form-data" id="myForm" name='file'>
+				<div class="upload">
+					<input type="text" class="ipt_text" id="file_text" placeholder="双击上传文件(最大文件3MB)...">
+					<div class="ufimg">
+						<img src="../static/img/inputfile.png" alt="">
+					</div>
+					<input type="file" name="file" id="upload_file" class="upload_file" size="26" onchange="fileChange(this);">
+					<input type="submit" name="submit" class="kw_btn" value="">
+					
+				</div>
+			</form>
+		</div>
+
+
+
+	<div class="H50"></div>
+	
+	<div class="webIntro">
+		ScanVirus是一个免费网站，针对未知可执行文件、可疑文件等进行检测和分析。<br>
+		本网站允许上传的文件类型:.jpg &nbsp;.png&nbsp;.txt&nbsp;.zip&nbsp;.doc&nbsp;.xls&nbsp;.pdf&nbsp;.docx&nbsp;.xlsx&nbsp; .exe。
+	</div>
+
+	
+	</div>
+	
+	
+		
+	<div class="foot">
+		
+		<div class="info color">
+			<a href="about">关于我们</a>
+		</div>
+		
+		<div class="info">&copy;2020&nbsp;&nbsp;&nbsp;ScanVirus</div>
+	</div>
+
+	<!-- Modal -->
+	
+	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">正在上传</h3>
+		</div>
+		<div class="modal-body">
+			<div class="progress progress-striped active">
+				<div class="bar" style="width: 0%;"></div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+			<button class="btn btn-primary">查看已有分析</button>
+		</div>
+	</div>
+
+	<div id="oversize" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">错误</h3>
+		</div>
+		<div class="modal-body">
+			超出3MB限制
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">关闭</button>
+		</div>
+	</div>
+	
+	<div id="nofile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">错误</h3>
+		</div>
+		<div class="modal-body">
+			空文件上传
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">关闭</button>
+		</div>
+	</div>
+
+	<div id="errorfile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">错误</h3>
+		</div>
+		<div class="modal-body">
+			不接收此类文件
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">关闭</button>
+		</div>
+	</div>
+
+</body>
+</html>
+<script type="text/javascript">
+	function showFilename(name)
+	{
+		var faketext = document.getElementById("file_text");
+		faketext.value = name.substr(name.lastIndexOf("\\")+1);
+	}
+	function fileChange(target) {
+		var fileSize = 0;
+		var filetypes =[".jpg",".png",".txt",".zip",".doc",".xls",".pdf",".docx",".xlsx", ".exe"];
+		var filepath = target.value;
+		showFilename(filepath);
+		var filemaxsize = 1024*2;//2M
+		if(filepath){
+			var isnext = false;
+			var fileend = filepath.substring(filepath.lastIndexOf("."));
+			if(filetypes && filetypes.length>0){
+				for(var i =0; i<filetypes.length;i++){
+					if(filetypes[i]==fileend){
+						isnext = true;
+						break;
+					}
+				}
+			}
+			if(!isnext){
+				$('#errorfile').modal('show');
+				target.value ="";
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+</script>
