@@ -12,7 +12,7 @@ $(function(){
 		});
 	});
 
-	var options = { 
+	var options = {
 		success:function(html) {
 			handleHTML(html);
 		},
@@ -37,22 +37,26 @@ $(function(){
 				}
 			}
 		}
-	}; 
+	};
 
 	// ================================
 	// 	响应表单提交
 	// ================================
+	$("#submit").click(function(){
+		$('#myModal').modal('show');
+	})
 	$('#myForm').ajaxForm(options);
 	function handleHTML(html){
-		// 转换对象
-		$('#myModal').modal('show');
-		setTimeout(function(){ window.location.href="upload" }, 3000);
+		console.log(html['session_flag'])
+		if(html['session_flag'] == 1){
+			window.location.href="outcount";
+		}
+		else{
+			setTimeout(function(){ window.location.href="upload" }, 3000);
+		}
 	}
 
-	
-	///////////////
-	// for IE 10 //
-	///////////////
+
 	function startRead() {
 		var file = document.getElementById('upload_file').files[0];
 		if (file != null) {
