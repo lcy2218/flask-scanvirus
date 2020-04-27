@@ -21,6 +21,8 @@
 
 	<script type="text/javascript" src="../static/js/tabs.js"></script>
 	<script type="text/javascript" src="../static/js/upload.js"></script>
+	<!-- <script type="text/javascript" src="../static/js/analyze.js"></script>
+	<script type="text/javascript" src="../static/js/dynamic.js"></script> -->
 	
 </head>
 <body>
@@ -47,11 +49,9 @@
 					<input type="file" name="file" id="upload_file" class="upload_file" size="26" onchange="fileChange(this)">
 					<!-- <input type="file" name="myfile" id="upload_file" class="upload_file" size="26"> -->
 					<input type="submit" name="submit" class="kw_btn" value="">
-					
 				</div>
 			</form>
 		</div>
-		
 
 		<!-- 文件简报 -->
 		<div class="H70"></div>
@@ -116,12 +116,13 @@
 								<th><strong>反病毒软件</strong></th>
 								<th ><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									文件情况</strong></th>
+									扫描结果</strong></th>
 								<th><strong>引擎版本</strong></th>
 							</tr>
 						</thead>
+
 						<tbody id='tbody'>
-							
+
 						</tbody>
 					</table>
 				</div>
@@ -131,13 +132,23 @@
 						<div id = 'possible'> 
 
 						</div>
-						
-						
 					</div>
 				</div>
+
+
 				<div id="tab3">
-					<div class="head"><div id="dynaTitle"><strong>可疑行为</strong></div></div>
-					<div class="dynamic"></div>
+					<table>
+						<tr class="head">
+							<thead>
+									<th><strong>字段</strong></th>
+									
+									<th><strong>值</strong></th>
+							</thead>
+						</tr>
+						<tbody id='checkfile''>
+
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -209,6 +220,8 @@
 		</div>
 	</div>
 </body>
+
+
 	<script>
 		function showFilename(name)
 		{
@@ -244,8 +257,12 @@
 		 $.ajax({ url: '/getSession',
           type:'POST',
           data:{},
-          dataType: 'json',
+		  dataType: 'json',
           success: function (data) {
+			console.log(data)
+			if(data.session_flag == 1){
+				window.location.href="outcount";
+			}
 			var tbody = $("#tbody");
 			var mylist = data.mylist;
 			var str = '';
@@ -265,19 +282,38 @@
 			var possible = $("#possible");
 			var num = count / mylist.length;
 			num = num * 100;
-			num = num.toFixed(2)
-			var str1 = ''
-			str1 += '<b>根据' +mylist.length+'个在线恶意软件检测平台提供检测的接口显示</b><br><br>'
-			str1 += '此未知文件安全程度为 : ' + num +'%<br><br>'
+			num = num.toFixed(2);
+			var str1 = '';
+			str1 += '<b>根据' +mylist.length+'个在线恶意软件检测平台提供检测的接口显示</b><br><br>';
+			str1 += '此未知文件安全程度为 : ' + num +'%<br><br>';
 			if(num > 80){
-				str1 += '此未知文件的威胁程度 : 安全'
+				str1 += '此未知文件的威胁程度 : 安全';
 			}else if(num < 80 && num >40 ){
-				str1 += '此未知文件的威胁程度 : 未知 建议使用动态检测'
+				str1 += '此未知文件的威胁程度 : 未知 建议使用动态检测';
 			}else{
-				str1 += '此未知文件的威胁程度 : 危险'
+				str1 += '此未知文件的威胁程度 : 危险';
 			}
 			possible.html(str1)
-		  }
+
+			// var mycheck = data.mycheck;
+			var checkfile = $('#checkfile');
+			var mycheck = data.mycheck;
+			var check_info = mycheck.check_info;
+			var str2 = '';
+			var count1 = 0;
+			//key value形式输出
+			for(var key in check_info){
+				str2 += '<tr> <th>'+key+'</th><th>';
+				str2 += '</th><th>'+check_info[key]+'</th></tr>';
+			}
+			str2 += '<tr> <th>'+'检测结果'+'</th><th>';
+			if(mycheck['check_result'] == 'malicious'){
+				str2 += '</th><th>'+'危险'+'</th></tr>';
+			}else if(mycheck['check_result'] == 'legitimate'){
+				str2 += '</th><th>'+'安全'+'</th></tr>';
+			}
+			checkfile.html(str2)
+		}
 		});
 	</script>
 </html>
