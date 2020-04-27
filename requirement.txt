@@ -1,0 +1,15 @@
+flask
+werkzeug.utils
+hashlib
+binascii
+urllib
+flask_sqlalchemy
+mysqlconnector
+pefile
+pickle
+joblib
+argparse
+pandas
+numpy
+pickle
+sklearn

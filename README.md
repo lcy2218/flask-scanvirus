@@ -3,7 +3,14 @@
 
 # 使用方式
 python app.py
-依赖请看.py中包含的库
+依赖库请看requirement.txt
+pip install -r requirements.txt
+
+# 具体功能
+app.py用于启动服务器
+learning.py用于训练数据集
+checkpe.py用于检测文件是否安全
+uploadfile.py用于上传文件
 
 # 关于uploadfile.py
 有时出现scan的error
