@@ -15,3 +15,12 @@ uploadfile.py用于上传文件
 # 关于uploadfile.py
 有时出现scan的error  
 使用小飞机多试几次即可
+
+# 数据库建表
+create table user_info{
+    id integer PRIMARY KEY AUTO_INCREMENT,
+    u_ip varchar(20),
+    u_md5 varchar(30),
+    u_count integer,
+    u_date date
+};
