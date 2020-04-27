@@ -18,9 +18,9 @@ uploadfile.py用于上传文件
 
 # 数据库建表
 create table user_info{
-    id integer PRIMARY KEY AUTO_INCREMENT,
-    u_ip varchar(20),
-    u_md5 varchar(30),
-    u_count integer,
-    u_date date
+    id integer PRIMARY KEY AUTO_INCREMENT,  
+    u_ip varchar(20),  
+    u_md5 varchar(30),  
+    u_count integer,  
+    u_date date  
 };
