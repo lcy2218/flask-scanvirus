@@ -52,7 +52,7 @@
 	
 	<div class="webIntro">
 		ScanVirus是一个免费网站，针对未知可执行文件、可疑文件等进行检测和分析。<br>
-		本网站允许上传的文件类型:.jpg &nbsp;.png&nbsp;.txt&nbsp;.zip&nbsp;.doc&nbsp;.xls&nbsp;.pdf&nbsp;.docx&nbsp;.xlsx&nbsp; .exe。
+		本网站允许上传的文件类型:.jpg &nbsp;.png&nbsp;.txt&nbsp;.dll&nbsp;.ocx&nbsp;.xls&nbsp;.sys&nbsp;.docx&nbsp;.xlsx&nbsp; .exe。
 	</div>
 
 	
@@ -136,7 +136,7 @@
 	}
 	function fileChange(target) {
 		var fileSize = 0;
-		var filetypes =[".jpg",".png",".txt",".zip",".doc",".xls",".pdf",".docx",".xlsx", ".exe"];
+		var filetypes =[".jpg",".png",".txt",".dll",".ocx",".xls",".sys",".docx",".xlsx", ".exe", ".DLL", ".EXE"];
 		var filepath = target.value;
 		showFilename(filepath);
 		var filemaxsize = 1024*2;//2M

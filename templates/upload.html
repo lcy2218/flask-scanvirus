@@ -21,8 +21,6 @@
 
 	<script type="text/javascript" src="../static/js/tabs.js"></script>
 	<script type="text/javascript" src="../static/js/upload.js"></script>
-	<!-- <script type="text/javascript" src="../static/js/analyze.js"></script>
-	<script type="text/javascript" src="../static/js/dynamic.js"></script> -->
 	
 </head>
 <body>
@@ -137,11 +135,13 @@
 
 
 				<div id="tab3">
+					<p id="resultpe"></p>
+					<p class="head"></p>
 					<table>
 						<tr class="head">
 							<thead>
 									<th><strong>字段</strong></th>
-									
+									<th><strong></strong></th>
 									<th><strong>值</strong></th>
 							</thead>
 						</tr>
@@ -284,35 +284,43 @@
 			num = num * 100;
 			num = num.toFixed(2);
 			var str1 = '';
-			str1 += '<b>根据' +mylist.length+'个在线恶意软件检测平台提供检测的接口显示</b><br><br>';
-			str1 += '此未知文件安全程度为 : ' + num +'%<br><br>';
+			str1 += '<b style="font-size:25px;">根据' +mylist.length+'个在线恶意软件检测平台提供检测的接口显示</b><br><br>';
+			str1 += '<p style="font-size:20px;"> 此未知文件安全程度为 : ' + num +'%</p>';
 			if(num > 80){
-				str1 += '此未知文件的威胁程度 : 安全';
+				str1 += '<p style="font-size:20px;">此未知文件的威胁程度 : 安全 <img style="width:50px;height:50px" src="../static/img/security1.png" alt=""></p>';
 			}else if(num < 80 && num >40 ){
-				str1 += '此未知文件的威胁程度 : 未知 建议使用动态检测';
+				str1 += '<p style="font-size:20px;">此未知文件的威胁程度 : 未知 建议查看动态检测<img style="width:50px;height:50px" src="../static/img/warning.png" alt=""></p>';
 			}else{
-				str1 += '此未知文件的威胁程度 : 危险';
+				str1 += '<p style="font-size:20px;">此未知文件的威胁程度 : 危险<img style="width:50px;height:50px" src="../static/img/danger.png" alt=""></p>';
 			}
 			possible.html(str1)
 
 			// var mycheck = data.mycheck;
 			var checkfile = $('#checkfile');
-			var mycheck = data.mycheck;
-			var check_info = mycheck.check_info;
-			var str2 = '';
-			var count1 = 0;
-			//key value形式输出
-			for(var key in check_info){
-				str2 += '<tr> <th>'+key+'</th><th>';
-				str2 += '</th><th>'+check_info[key]+'</th></tr>';
-			}
-			str2 += '<tr> <th>'+'检测结果'+'</th><th>';
-			if(mycheck['check_result'] == 'malicious'){
-				str2 += '</th><th>'+'危险'+'</th></tr>';
-			}else if(mycheck['check_result'] == 'legitimate'){
-				str2 += '</th><th>'+'安全'+'</th></tr>';
-			}
-			checkfile.html(str2)
+			if(data.ispe == 1){
+				var mycheck = data.mycheck;
+				var check_info = mycheck.check_info;
+				var str2 = '';
+			    var str3 = '';
+				var count1 = 0;
+				//key value形式输出
+				str3 += '<b style="font-size:25px;">检测结果:</b>';
+				if(mycheck['check_result'] == 'malicious'){
+					str3 += '<span style="margin-left:25px;font-size:25px;">'+'危险'+'<img style="width:50px;height:50px" src="../static/img/danger.png" alt=""></span>';
+				}else if(mycheck['check_result'] == 'legitimate'){
+					str3 += '<span style="margin-left:25px; font-size:25px;">'+'安全'+'<img style="width:50px;height:50px" src="../static/img/security1.png" alt=""></span> ';
+				}
+				$('#resultpe').html(str3);
+
+				for(var key in check_info){
+					str2 += '<tr> <th>'+key+'</th><th>';
+					str2 += '</th><th>'+check_info[key]+'</th></tr>';
+				}
+				checkfile.html(str2)
+			}else if(data.ispe == 0){
+				var str2 = '<tr> <th>提示:只有.exe .dll .sys .ocx类型的pe文件<br>才可以使用动态检测</th><th>';
+				checkfile.html(str2)
+			}	
 		}
 		});
 	</script>

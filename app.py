@@ -65,18 +65,23 @@ def index():
         filesize = os.path.getsize(upload_path)
         #保留两位小数
         mydict['filesize'] = ("%.2f" % (filesize/float(1024 * 1024)))
-
+        #用于存储上传结果
         mylist =[]
         #上传扫描
         mylist = uploadflie.uploadFile(mydict['filename'], upload_path)
+        #存储机器学习结果
+        mycheck = {}
         #机器学习扫描
-        mycheck = checkpe.output_result(upload_path)
-
+        ispe = 0
+        if os.path.splitext(upload_path)[1] == '.exe' or os.path.splitext(upload_path)[1] == '.dll' or os.path.splitext(upload_path)[1] == '.sys' or os.path.splitext(upload_path)[1] == '.ocx':
+            mycheck = checkpe.output_result(upload_path)
+            ispe = 1
         myjson = {
             'mydict' : mydict,
             'mylist' : mylist,
             'mycheck' : mycheck,
-            'session_flag' : 0
+            'session_flag' : 0,
+            'ispe': ispe
         }
         session['myjson'] = myjson
 
@@ -123,14 +128,19 @@ def upload():
         mylist =[]
         #上传扫描
         mylist = uploadflie.uploadFile(mydict['filename'], upload_path)
+        #存储机器学习结果
+        mycheck = {}
         #机器学习扫描
-        mycheck = checkpe.output_result(upload_path)
-
+        ispe = 0
+        if os.path.splitext(upload_path)[1] == '.exe' or os.path.splitext(upload_path)[1] == '.dll' or os.path.splitext(upload_path)[1] == '.sys' or os.path.splitext(upload_path)[1] == '.ocx' :
+            mycheck = checkpe.output_result(upload_path)
+            ispe = 1
         myjson = {
             'mydict' : mydict,
             'mylist' : mylist,
             'mycheck' : mycheck,
-            'session_flag' : 0
+            'session_flag' : 0,
+            'ispe': ispe
         }
         session['myjson'] = myjson
 

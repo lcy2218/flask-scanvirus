@@ -20,10 +20,6 @@ $(function(){
 			$(".bar").css("width", percentComplete+"%");
 		},
 		beforeSubmit: function(arr, $form, options) {
-			if(document.getElementById("upload_file").value == null || document.getElementById("upload_file").value == ""){
-				$('#nofile').modal('show');
-			 	return false;
-			}
 			localStorage.setItem("filesize", $('#upload_file')[0].files[0].size);
 			if ($('#upload_file')[0].files.length > 0) {
 				// 限制文件大小， 3M =3 * 1024 * 1024
@@ -43,7 +39,14 @@ $(function(){
 	// 	响应表单提交
 	// ================================
 	$("#submit").click(function(){
-		$('#myModal').modal('show');
+		if(document.getElementById("upload_file").value == null || document.getElementById("upload_file").value == ""){
+			$('#nofile').modal('show');
+			 return false;
+		}
+		else{
+			$('#myModal').modal('show');
+		}
+		
 	})
 	$('#myForm').ajaxForm(options);
 	function handleHTML(html){
