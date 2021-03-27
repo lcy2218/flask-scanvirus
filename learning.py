@@ -15,8 +15,7 @@ y = data['legitimate'].values
 print('一共有%i个重要特征\n' % X.shape[1])
 
 # Feature selection using Trees Classifier
-print(X)
-print(y)
+print('正在处理数据...')
 fsel = ske.ExtraTreesClassifier().fit(X, y)
 model = SelectFromModel(fsel, prefit=True)
 X_new = model.transform(X)
@@ -26,11 +25,11 @@ X_train, X_test, y_train, y_test = model_selection.train_test_split(X_new, y ,te
 
 features = []
 
-print('%i features identified as important:' % nb_features)
+print('%i个重要字段:' % nb_features)
 
 indices = np.argsort(fsel.feature_importances_)[::-1][:nb_features]
 for f in range(nb_features):
-    print("%d. feature %s (%f)" % (f + 1, data.columns[2+indices[f]], fsel.feature_importances_[indices[f]]))
+    print("%d. 字段 %s (%f)" % (f + 1, data.columns[2+indices[f]], fsel.feature_importances_[indices[f]]))
 
 # XXX : take care of the feature order
 for f in sorted(np.argsort(fsel.feature_importances_)[::-1][:nb_features]):
@@ -46,7 +45,7 @@ algorithms = {
     }
 
 results = {}
-print("\nNow testing algorithms")
+print("\n正在测试算法......")
 for algo in algorithms:
     clf = algorithms[algo]
     clf.fit(X_train, y_train)
@@ -55,10 +54,10 @@ for algo in algorithms:
     results[algo] = score
 
 winner = max(results, key=results.get)
-print('\nWinner algorithm is %s with a %f %% success' % (winner, results[winner]*100))
+print('\n最终算法为 %s 正确率为 %f %% ' % (winner, results[winner]*100))
 
 # Save the algorithm and the feature list for later predictions
-print('Saving algorithm and feature list in classifier directory...')
+print('正在classifier目录中保存算法和特征列表...')
 joblib.dump(algorithms[winner], 'classifier/classifier.pkl')
 open('classifier/features.pkl', 'wb').write(pickle.dumps(features))
 print('Saved')
@@ -67,5 +66,5 @@ print('Saved')
 clf = algorithms[winner]
 res = clf.predict(X_test)
 mt = confusion_matrix(y_test, res)
-print("False positive rate : %f %%" % ((mt[0][1] / float(sum(mt[0])))*100))
-print('False negative rate : %f %%' % ( (mt[1][0] / float(sum(mt[1]))*100)))
+print("假阳性率为 : %f %%" % ((mt[0][1] / float(sum(mt[0])))*100))
+print('假阴性率为 : %f %%' % ( (mt[1][0] / float(sum(mt[1]))*100)))

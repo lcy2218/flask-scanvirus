@@ -136,6 +136,7 @@
 	}
 	function fileChange(target) {
 		var fileSize = 0;
+		//限制上传文件类型
 		var filetypes =[".jpg",".png",".txt",".dll",".ocx",".xls",".sys",".docx",".xlsx", ".exe", ".DLL", ".EXE"];
 		var filepath = target.value;
 		showFilename(filepath);
@@ -152,6 +153,7 @@
 				}
 			}
 			if(!isnext){
+				//弹窗上传文件格式不允许
 				$('#errorfile').modal('show');
 				target.value ="";
 				return false;

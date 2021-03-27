@@ -7,24 +7,21 @@ import joblib
 import sys
 import argparse
 
+#获取熵
 def get_entropy(data):
     if len(data) == 0:
 	    return 0.0
     occurences = array.array('L', [0]*256)
     for x in data:
   	    occurences[x if isinstance(x, int) else ord(x)] += 1
-
     entropy = 0
     for x in occurences:
 	    if x:
 	        p_x = float(x) / len(data)
 	    entropy -= p_x*math.log(p_x, 2)
-
     return entropy
-
+#提取元素[entropy,size]
 def get_resources(pe):
-    """Extract resources :
-    [entropy, size]"""
     resources = []
     if hasattr(pe, 'DIRECTORY_ENTRY_RESOURCE'):
         try:
@@ -40,9 +37,8 @@ def get_resources(pe):
         except Exception as e:
             return resources
     return resources
-
+#获取版本信息
 def get_version_info(pe):
-    """Return version infos"""
     res = {}
     for fileinfo in pe.FileInfo:
         if fileinfo.Key == 'StringFileInfo':
